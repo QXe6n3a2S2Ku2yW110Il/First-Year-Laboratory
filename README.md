@@ -23,6 +23,9 @@
   * 5
     * Context-free grammar
     * Chomsky normal form
+    
+  * 9
+    * Turing Machines
 
 ## Algorithms
   * 1
