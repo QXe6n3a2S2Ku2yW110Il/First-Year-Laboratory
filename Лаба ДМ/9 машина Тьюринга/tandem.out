@@ -1,0 +1,55 @@
+start: replace_first
+accept: finished
+reject: fault
+blank: _
+
+replace_first _ -> finished _ ^
+
+replace_first 1 -> go_to_last_virgin I >
+replace_first 0 -> go_to_last_virgin O >
+
+go_to_last_virgin 1 -> go_to_last_virgin 1 >
+go_to_last_virgin 0 -> go_to_last_virgin 0 >
+go_to_last_virgin _ -> replace_last _ <
+go_to_last_virgin i -> replace_last i <
+go_to_last_virgin o -> replace_last o <
+
+replace_last 0 -> go_to_first_virgin o <
+replace_last 1 -> go_to_first_virgin i <
+
+replace_last O -> fault O ^
+replace_last I -> fault I ^
+
+go_to_first_virgin 1 -> go_to_first_virgin 1 <
+go_to_first_virgin 0 -> go_to_first_virgin 0 <
+go_to_first_virgin I -> replace_first I >
+go_to_first_virgin O -> replace_first O >
+
+
+replace_first i -> go_to_first_ensure_with_1 ! <
+replace_first o -> go_to_first_ensure_with_0 ! <
+
+go_to_first_ensure_with_0 I -> go_to_first_ensure_with_0 I <
+go_to_first_ensure_with_0 O -> go_to_first_ensure_with_0 O <
+go_to_first_ensure_with_0 _ -> ensure_0 _ >
+go_to_first_ensure_with_0 ! -> go_to_first_ensure_with_0 ! <
+go_to_first_ensure_with_0 # -> ensure_0 # >
+
+ensure_0 O -> get_next_digit # >
+ensure_0 I -> fault I ^
+
+go_to_first_ensure_with_1 I -> go_to_first_ensure_with_1 I <
+go_to_first_ensure_with_1 O -> go_to_first_ensure_with_1 O <
+go_to_first_ensure_with_1 _ -> ensure_1 _ >
+go_to_first_ensure_with_1 ! -> go_to_first_ensure_with_1 ! <
+go_to_first_ensure_with_1 # -> ensure_1 # >
+
+ensure_1 I -> get_next_digit # >
+ensure_1 O -> fault O ^
+
+get_next_digit O -> get_next_digit O >
+get_next_digit I -> get_next_digit I >
+get_next_digit ! -> get_next_digit ! >
+get_next_digit o -> go_to_first_ensure_with_0 ! <
+get_next_digit i -> go_to_first_ensure_with_1 ! <
+get_next_digit _ -> finished _ ^

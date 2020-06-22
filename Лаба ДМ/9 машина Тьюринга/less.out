@@ -1,0 +1,43 @@
+start: go_to_end
+accept: finished
+reject: fault
+blank: _
+
+go_to_end 0 -> go_to_end 0 >
+go_to_end 1 -> go_to_end 1 >
+go_to_end O -> go_to_end O >
+go_to_end I -> go_to_end I >
+go_to_end < -> go_to_end < >
+go_to_end _ -> get_last_digit _ <
+go_to_end o -> get_last_digit o <
+go_to_end i -> get_last_digit i <
+
+get_last_digit 0 -> last_is_0 o <
+get_last_digit 1 -> last_is_1 i <
+get_last_digit < -> fault < ^
+
+last_is_0 0 -> last_is_0 0 <
+last_is_0 1 -> last_is_0 1 <
+last_is_0 < -> subtract_0 < <
+
+subtract_0 0 -> go_to_end O >
+subtract_0 1 -> go_to_end I >
+subtract_0 O -> subtract_0 O <
+subtract_0 I -> subtract_0 I <
+subtract_0 _ -> finished _ ^
+
+last_is_1 0 -> last_is_1 0 <
+last_is_1 1 -> last_is_1 1 <
+last_is_1 O -> last_is_1 O <
+last_is_1 I -> last_is_1 I <
+last_is_1 < -> subtract_1 < <
+
+subtract_1 0 -> carry I <
+subtract_1 1 -> go_to_end O >
+subtract_1 O -> subtract_1 O <
+subtract_1 I -> subtract_1 I <
+subtract_1 _ -> finished _ ^
+
+carry 0 -> carry 1 <
+carry 1 -> go_to_end 0 >
+carry _ -> finished _ ^

@@ -1,0 +1,76 @@
+start: copy
+accept: finished
+reject: ignored
+blank: _
+
+copy _ -> finished _ ^
+
+copy 0 -> paste_0 O >
+copy 1 -> paste_1 I >
+
+paste_0 0 -> paste_0 0 >
+paste_0 o -> paste_0 o >
+paste_0 1 -> paste_0 1 >
+paste_0 i -> paste_0 i >
+paste_0 _ -> go_to_virgin o <
+
+paste_1 0 -> paste_1 0 >
+paste_1 o -> paste_1 o >
+paste_1 1 -> paste_1 1 >
+paste_1 i -> paste_1 i >
+paste_1 _ -> go_to_virgin i <
+
+go_to_virgin 0 -> go_to_virgin 0 <
+go_to_virgin 1 -> go_to_virgin 1 <
+go_to_virgin O -> copy O >
+go_to_virgin I -> copy I >
+go_to_virgin o -> go_to_virgin o <
+go_to_virgin i -> go_to_virgin i <
+
+
+copy o -> last_virgin_is_0 O >
+copy i -> last_virgin_is_1 I >
+
+last_virgin_is_0 o -> last_virgin_is_0 o >
+last_virgin_is_0 i -> last_virgin_is_0 i >
+last_virgin_is_0 O -> to_0 O <
+last_virgin_is_0 I -> to_0 I <
+last_virgin_is_0 _ -> to_0 _ <
+
+last_virgin_is_1 o -> last_virgin_is_1 o >
+last_virgin_is_1 i -> last_virgin_is_1 i >
+last_virgin_is_1 O -> to_1 O <
+last_virgin_is_1 I -> to_1 I <
+last_virgin_is_1 _ -> to_1 _ <
+
+to_0 o -> first_virgin_is_0 O <
+to_0 i -> first_virgin_is_1 O <
+
+to_1 o -> first_virgin_is_0 I <
+to_1 i -> first_virgin_is_1 I <
+
+first_virgin_is_0 o -> first_virgin_is_0 o <
+first_virgin_is_0 i -> first_virgin_is_0 i <
+first_virgin_is_0 O -> copy O >
+first_virgin_is_0 I -> copy O >
+
+first_virgin_is_1 o -> first_virgin_is_1 o <
+first_virgin_is_1 i -> first_virgin_is_1 i <
+first_virgin_is_1 O -> copy I >
+first_virgin_is_1 I -> copy I >
+
+
+copy O -> go_to_end O >
+copy I -> go_to_end I >
+to_0 O -> go_to_end O >
+to_0 I -> go_to_end I >
+to_1 O -> go_to_end O >
+to_1 I -> go_to_end I >
+
+go_to_end O -> go_to_end O >
+go_to_end I -> go_to_end I >
+go_to_end _ -> prepare_for_answer _ <
+
+prepare_for_answer O -> prepare_for_answer 0 <
+prepare_for_answer I -> prepare_for_answer 1 <
+prepare_for_answer _ -> finished _ >

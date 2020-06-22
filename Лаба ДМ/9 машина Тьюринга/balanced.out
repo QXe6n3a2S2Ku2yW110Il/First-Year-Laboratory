@@ -1,0 +1,27 @@
+start: find(
+accept: finished
+reject: fault
+blank: _
+
+find( _ -> finished _ ^
+find( ) -> fault ) ^
+
+find( ( -> search) ! >
+
+search) ( -> go_back ( <
+search) ) -> go_replace! # <
+search) # -> search) # >
+
+go_back # -> go_back # <
+go_back ! -> find( ( >
+
+go_replace! # -> go_replace! # <
+go_replace! ( -> go_replace! ( <
+go_replace! ! -> go_to_first # <
+
+go_to_first ( -> go_to_first ( <
+go_to_first ) -> go_to_first ) <
+go_to_first # -> go_to_first # <
+go_to_first _ -> find( _ >
+
+find( # -> find( # >

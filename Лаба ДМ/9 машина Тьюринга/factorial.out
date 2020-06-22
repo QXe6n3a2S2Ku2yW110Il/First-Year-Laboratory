@@ -1,0 +1,260 @@
+start: check_if_1
+accept: finished
+reject: ignored
+blank: _
+
+check_if_1 0 -> finished 1 ^
+check_if_1 1 -> 1? 1 >
+
+1? _ -> finished _ <
+1? 0 -> move_to_put_delimiter 0 <
+1? 1 -> move_to_put_delimiter 1 <
+
+
+move_to_put_delimiter 0 -> put_delimiter 0 <
+move_to_put_delimiter 1 -> put_delimiter 1 <
+
+put_delimiter _ -> go_to_last_not_copied # >
+
+go_to_last_not_copied 0 -> go_to_last_not_copied 0 >
+go_to_last_not_copied 1 -> go_to_last_not_copied 1 >
+go_to_last_not_copied O -> copy_digit O <
+go_to_last_not_copied I -> copy_digit I <
+go_to_last_not_copied # -> go_to_last_not_copied # >
+go_to_last_not_copied _ -> copy_digit _ <
+
+copy_digit 0 -> go_to_paste_0 O <
+copy_digit 1 -> go_to_paste_1 I <
+copy_digit # -> put_digit_instead_of_letter # >
+
+go_to_paste_0 0 -> go_to_paste_0 0 <
+go_to_paste_0 1 -> go_to_paste_0 1 <
+go_to_paste_0 # -> go_to_start_to_paste_0 # <
+
+go_to_paste_1 0 -> go_to_paste_1 0 <
+go_to_paste_1 1 -> go_to_paste_1 1 <
+go_to_paste_1 # -> go_to_start_to_paste_1 # <
+
+go_to_start_to_paste_0 0 -> go_to_start_to_paste_0 0 <
+go_to_start_to_paste_0 1 -> go_to_start_to_paste_0 1 <
+go_to_start_to_paste_0 _ -> go_to_last_not_copied 0 >
+
+go_to_start_to_paste_1 0 -> go_to_start_to_paste_1 0 <
+go_to_start_to_paste_1 1 -> go_to_start_to_paste_1 1 <
+go_to_start_to_paste_1 _ -> go_to_last_not_copied 1 >
+
+put_digit_instead_of_letter O -> put_digit_instead_of_letter 0 >
+put_digit_instead_of_letter I -> put_digit_instead_of_letter 1 >
+put_digit_instead_of_letter _ -> move_to_paste_one_more _ <
+
+move_to_paste_one_more 0 -> move_to_paste_one_more 0 <
+move_to_paste_one_more 1 -> move_to_paste_one_more 1 <
+move_to_paste_one_more # -> move_to_paste_one_more # <
+move_to_paste_one_more _ -> go_to_last_not_copied_to_paste_one_more * >
+
+go_to_last_not_copied_to_paste_one_more 0 -> go_to_last_not_copied_to_paste_one_more 0 >
+go_to_last_not_copied_to_paste_one_more 1 -> go_to_last_not_copied_to_paste_one_more 1 >
+go_to_last_not_copied_to_paste_one_more # -> copy_digit # <
+go_to_last_not_copied * -> go_to_last_not_copied * >
+
+copy_digit * -> put_digit_instead_of_letter * >
+
+go_to_paste_0 * -> go_to_start_to_paste_0 * <
+
+go_to_paste_1 * -> go_to_start_to_paste_1 * <
+
+put_digit_instead_of_letter # -> move_to_subtract_input_once # >
+
+move_to_subtract_input_once 0 -> move_to_subtract_input_once 0 >
+move_to_subtract_input_once 1 -> move_to_subtract_input_once 1 >
+move_to_subtract_input_once _ -> subtract_input_once _ <
+
+subtract_input_once 0 -> subtract_input_once 1 <
+subtract_input_once 1 -> move_to_subtract_right_factor_once 0 <
+
+move_to_subtract_right_factor_once 0 -> move_to_subtract_right_factor_once 0 <
+move_to_subtract_right_factor_once 1 -> move_to_subtract_right_factor_once 1 <
+move_to_subtract_right_factor_once # -> subtract_right_factor_once # <
+
+subtract_right_factor_once 0 -> subtract_right_factor_once 1 <
+subtract_right_factor_once 1 -> go_to_end_to_subtract 0 ^
+
+
+go_to_end_to_subtract 0 -> go_to_end_to_subtract 0 >
+go_to_end_to_subtract 1 -> go_to_end_to_subtract 1 >
+go_to_end_to_subtract * -> go_to_end_to_subtract * >
+go_to_end_to_subtract # -> subtract # <
+
+subtract 0 -> subtract 1 <
+subtract 1 -> go_to_term_to_update_res 0 <
+subtract * -> clear_right_factor * >
+
+go_to_term_to_update_res 0 -> go_to_term_to_update_res 0 <
+go_to_term_to_update_res 1 -> go_to_term_to_update_res 1 <
+go_to_term_to_update_res * -> get_digit * <
+
+
+get_digit 0 -> get_away_from_term_to_add_0 O <
+get_digit 1 -> get_away_from_term_to_add_1 I <
+get_digit ! -> go_to_start_to_prepare_for_next_step ! <
+
+get_away_from_term_to_add_0 0 -> get_away_from_term_to_add_0 0 <
+get_away_from_term_to_add_0 1 -> get_away_from_term_to_add_0 1 <
+get_away_from_term_to_add_0 _ -> add_0 ! <
+get_away_from_term_to_add_0 ! -> add_0 ! <
+
+get_away_from_term_to_add_1 0 -> get_away_from_term_to_add_1 0 <
+get_away_from_term_to_add_1 1 -> get_away_from_term_to_add_1 1 <
+get_away_from_term_to_add_1 _ -> add_1 ! <
+get_away_from_term_to_add_1 ! -> add_1 ! <
+
+add_0 _ -> go_to_term_to_get_next_digit O >
+add_0 O -> add_0 O <
+add_0 I -> add_0 I <
+add_0 0 -> go_to_term_to_get_next_digit O >
+add_0 1 -> go_to_term_to_get_next_digit I >
+
+add_1 _ -> go_to_term_to_get_next_digit I >
+add_1 O -> add_1 O <
+add_1 I -> add_1 I <
+add_1 0 -> go_to_term_to_get_next_digit I >
+add_1 1 -> carry O <
+
+carry _ -> go_to_term_to_get_next_digit 1 >
+carry 0 -> go_to_term_to_get_next_digit 1 >
+carry 1 -> carry 0 <
+
+go_to_term_to_get_next_digit 0 -> go_to_term_to_get_next_digit 0 >
+go_to_term_to_get_next_digit 1 -> go_to_term_to_get_next_digit 1 >
+go_to_term_to_get_next_digit O -> go_to_term_to_get_next_digit O >
+go_to_term_to_get_next_digit I -> go_to_term_to_get_next_digit I >
+go_to_term_to_get_next_digit ! -> get_next_digit ! >
+
+get_next_digit 0 -> get_next_digit 0 >
+get_next_digit 1 -> get_next_digit 1 >
+get_next_digit O -> get_digit O <
+get_next_digit I -> get_digit I <
+
+
+go_to_start_to_prepare_for_next_step 0 -> prepare_for_next_step 0 >
+go_to_start_to_prepare_for_next_step 1 -> prepare_for_next_step 1 >
+go_to_start_to_prepare_for_next_step O -> go_to_start_to_prepare_for_next_step O <
+go_to_start_to_prepare_for_next_step I -> go_to_start_to_prepare_for_next_step I <
+go_to_start_to_prepare_for_next_step _ -> prepare_for_next_step _ >
+
+prepare_for_next_step 0 -> prepare_for_next_step 0 >
+prepare_for_next_step 1 -> prepare_for_next_step 1 >
+prepare_for_next_step O -> prepare_for_next_step 0 >
+prepare_for_next_step I -> prepare_for_next_step 1 >
+prepare_for_next_step ! -> prepare_for_next_step ! >
+prepare_for_next_step * -> go_to_end_to_subtract * >
+
+
+clear_right_factor 0 -> clear_right_factor _ >
+clear_right_factor 1 -> clear_right_factor _ >
+clear_right_factor # -> go_to_end_to_subtract_input # >
+
+go_to_end_to_subtract_input 0 -> go_to_end_to_subtract_input 0 >
+go_to_end_to_subtract_input 1 -> go_to_end_to_subtract_input 1 >
+go_to_end_to_subtract_input # -> go_to_end_to_subtract_input # >
+go_to_end_to_subtract_input _ -> subtract_input_in_cycle _ <
+
+subtract_input_in_cycle 0 -> subtract_input_in_cycle 1 <
+subtract_input_in_cycle 1 -> go_to_check_if_0_in_cycle 0 >
+
+go_to_check_if_0_in_cycle 0 -> go_to_check_if_0_in_cycle 0 >
+go_to_check_if_0_in_cycle 1 -> go_to_check_if_0_in_cycle 1 >
+go_to_check_if_0_in_cycle _ -> check_if_0_in_cycle _ <
+
+check_if_0_in_cycle 0 -> check_if_0_in_cycle 0 <
+check_if_0_in_cycle 1 -> move_to_put_right_factor_in_cycle 1 ^
+check_if_0_in_cycle # -> go_to_prepare_for_answer # >
+
+move_to_put_right_factor_in_cycle 0 -> move_to_put_right_factor_in_cycle 0 >
+move_to_put_right_factor_in_cycle 1 -> move_to_put_right_factor_in_cycle 1 >
+move_to_put_right_factor_in_cycle _ -> copy_digit_for_right_factor_in_cycle _ <
+move_to_put_right_factor_in_cycle O -> copy_digit_for_right_factor_in_cycle 0 <
+move_to_put_right_factor_in_cycle I -> copy_digit_for_right_factor_in_cycle 1 <
+move_to_put_right_factor_in_cycle # -> move_to_put_right_factor_in_cycle # >
+
+copy_digit_for_right_factor_in_cycle 0 -> move_to_paste_0_to_right_factor_in_cycle O <
+copy_digit_for_right_factor_in_cycle 1 -> move_to_paste_1_to_right_factor_in_cycle I <
+copy_digit_for_right_factor_in_cycle # -> go_to_move_product_to_left_factor_in_cycle # <
+
+move_to_paste_0_to_right_factor_in_cycle 0 -> move_to_paste_0_to_right_factor_in_cycle 0 <
+move_to_paste_0_to_right_factor_in_cycle 1 -> move_to_paste_0_to_right_factor_in_cycle 1 <
+move_to_paste_0_to_right_factor_in_cycle # -> move_to_paste_0_to_right_factor_in_cycle # <
+move_to_paste_0_to_right_factor_in_cycle _ -> move_to_put_right_factor_in_cycle 0 >
+
+move_to_paste_1_to_right_factor_in_cycle 0 -> move_to_paste_1_to_right_factor_in_cycle 0 <
+move_to_paste_1_to_right_factor_in_cycle 1 -> move_to_paste_1_to_right_factor_in_cycle 1 <
+move_to_paste_1_to_right_factor_in_cycle # -> move_to_paste_1_to_right_factor_in_cycle # <
+move_to_paste_1_to_right_factor_in_cycle _ -> move_to_put_right_factor_in_cycle 1 >
+
+go_to_move_product_to_left_factor_in_cycle 0 -> go_to_move_product_to_left_factor_in_cycle 0 <
+go_to_move_product_to_left_factor_in_cycle 1 -> go_to_move_product_to_left_factor_in_cycle 1 <
+go_to_move_product_to_left_factor_in_cycle * -> go_to_move_product_to_left_factor_in_cycle * <
+go_to_move_product_to_left_factor_in_cycle _ -> select_digit_for_left_factor_in_cycle _ >
+go_to_move_product_to_left_factor_in_cycle ! -> go_to_move_product_to_left_factor_in_cycle ! <
+go_to_move_product_to_left_factor_in_cycle O -> go_to_move_product_to_left_factor_in_cycle O <
+go_to_move_product_to_left_factor_in_cycle I -> go_to_move_product_to_left_factor_in_cycle I <
+
+select_digit_for_left_factor_in_cycle 0 -> select_digit_for_left_factor_in_cycle 0 >
+select_digit_for_left_factor_in_cycle 1 -> select_digit_for_left_factor_in_cycle 1 >
+select_digit_for_left_factor_in_cycle O -> move_product_to_left_factor_in_cycle 0 <
+select_digit_for_left_factor_in_cycle I -> move_product_to_left_factor_in_cycle 1 <
+select_digit_for_left_factor_in_cycle ! -> move_product_to_left_factor_in_cycle ! <
+
+move_product_to_left_factor_in_cycle 0 -> go_to_paste_0_to_left_factor_in_cycle O >
+move_product_to_left_factor_in_cycle 1 -> go_to_paste_1_to_left_factor_in_cycle I >
+move_product_to_left_factor_in_cycle O -> move_product_to_left_factor_in_cycle O <
+move_product_to_left_factor_in_cycle I -> move_product_to_left_factor_in_cycle I <
+move_product_to_left_factor_in_cycle _ -> prepare_for_next_multiply_in_cycle _ >
+
+go_to_paste_0_to_left_factor_in_cycle ! -> go_to_paste_0_to_left_factor_in_cycle ! >
+go_to_paste_0_to_left_factor_in_cycle 0 -> go_to_paste_0_to_left_factor_in_cycle 0 >
+go_to_paste_0_to_left_factor_in_cycle 1 -> go_to_paste_0_to_left_factor_in_cycle 1 >
+go_to_paste_0_to_left_factor_in_cycle * -> paste_0_to_left_factor_in_cycle * <
+go_to_paste_0_to_left_factor_in_cycle o -> paste_0_to_left_factor_in_cycle o <
+go_to_paste_0_to_left_factor_in_cycle i -> paste_0_to_left_factor_in_cycle i <
+
+go_to_paste_1_to_left_factor_in_cycle ! -> go_to_paste_1_to_left_factor_in_cycle ! >
+go_to_paste_1_to_left_factor_in_cycle 0 -> go_to_paste_1_to_left_factor_in_cycle 0 >
+go_to_paste_1_to_left_factor_in_cycle 1 -> go_to_paste_1_to_left_factor_in_cycle 1 >
+go_to_paste_1_to_left_factor_in_cycle * -> paste_1_to_left_factor_in_cycle * <
+go_to_paste_1_to_left_factor_in_cycle o -> paste_1_to_left_factor_in_cycle o <
+go_to_paste_1_to_left_factor_in_cycle i -> paste_1_to_left_factor_in_cycle i <
+
+paste_0_to_left_factor_in_cycle 0 -> go_to_move_product_to_left_factor_in_cycle o <
+paste_0_to_left_factor_in_cycle 1 -> go_to_move_product_to_left_factor_in_cycle o <
+paste_0_to_left_factor_in_cycle ! -> go_to_move_product_to_left_factor_in_cycle o <
+paste_0_to_left_factor_in_cycle O -> go_to_move_product_to_left_factor_in_cycle o <
+paste_0_to_left_factor_in_cycle I -> go_to_move_product_to_left_factor_in_cycle o <
+
+paste_1_to_left_factor_in_cycle 0 -> go_to_move_product_to_left_factor_in_cycle i <
+paste_1_to_left_factor_in_cycle 1 -> go_to_move_product_to_left_factor_in_cycle i <
+paste_1_to_left_factor_in_cycle ! -> go_to_move_product_to_left_factor_in_cycle i <
+paste_1_to_left_factor_in_cycle O -> go_to_move_product_to_left_factor_in_cycle i <
+paste_1_to_left_factor_in_cycle I -> go_to_move_product_to_left_factor_in_cycle i <
+
+prepare_for_next_multiply_in_cycle 0 -> prepare_for_next_multiply_in_cycle _ >
+prepare_for_next_multiply_in_cycle 1 -> prepare_for_next_multiply_in_cycle _ >
+prepare_for_next_multiply_in_cycle ! -> prepare_for_next_multiply_in_cycle _ >
+prepare_for_next_multiply_in_cycle o -> prepare_for_next_multiply_in_cycle 0 >
+prepare_for_next_multiply_in_cycle i -> prepare_for_next_multiply_in_cycle 1 >
+prepare_for_next_multiply_in_cycle * -> go_to_end_to_subtract * >
+
+
+go_to_prepare_for_answer 0 -> go_to_prepare_for_answer 0 >
+go_to_prepare_for_answer _ -> clean_redundant _ <
+
+clean_redundant 0 -> clean_redundant _ <
+clean_redundant 1 -> clean_redundant _ <
+clean_redundant # -> clean_redundant _ <
+clean_redundant * -> clean_redundant _ <
+clean_redundant _ -> clean_redundant _ <
+clean_redundant ! -> go_to_show_answer _ <
+
+go_to_show_answer 0 -> go_to_show_answer 0 <
+go_to_show_answer 1 -> go_to_show_answer 1 <
+go_to_show_answer _ -> finished _ >

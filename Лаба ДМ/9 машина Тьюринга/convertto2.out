@@ -1,0 +1,43 @@
+start: at_input_start
+accept: finished
+reject: ignored
+blank: _
+
+at_input_start _ -> finished _ ^
+at_input_start 0 -> finished 0 ^
+at_input_start 1 -> set_delimiter 1 <
+at_input_start 2 -> set_delimiter 2 <
+
+set_delimiter _ -> go_to_input_end ! >
+
+go_to_input_end 0 -> go_to_input_end 0 >
+go_to_input_end 1 -> go_to_input_end 1 >
+go_to_input_end 2 -> go_to_input_end 2 >
+go_to_input_end ! -> go_to_input_end ! >
+go_to_input_end _ -> subtract_from_input _ <
+
+subtract_from_input 0 -> subtract_from_input 2 <
+subtract_from_input 1 -> go_to_res_start 0 <
+subtract_from_input 2 -> go_to_res_start 1 <
+subtract_from_input ! -> clear_input _ >
+
+go_to_res_start 0 -> go_to_res_start 0 <
+go_to_res_start 1 -> go_to_res_start 1 <
+go_to_res_start 2 -> go_to_res_start 2 <
+go_to_res_start ! -> add_to_res ! <
+
+add_to_res _ -> go_to_input_end 1 >
+add_to_res 0 -> go_to_input_end 1 >
+add_to_res 1 -> add_to_res 0 <
+
+
+clear_input 0 -> clear_input _ >
+clear_input 1 -> clear_input _ >
+clear_input 2 -> clear_input _ >
+clear_input _ -> find_digit _ <
+
+find_digit _ -> find_digit _ <
+find_digit 0 -> go_to_res_start 0 <
+find_digit 1 -> go_to_res_start 1 <
+
+go_to_res_start _ -> finished _ >

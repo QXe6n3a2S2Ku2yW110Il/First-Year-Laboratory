@@ -1,0 +1,65 @@
+3
+
+S _ _ _ -> AC _ ^ _ ^ _ ^
+
+S 0 _ _ -> copy_array 0 > 0 > _ ^
+S 1 _ _ -> copy_array 1 > 1 > _ ^
+
+copy_array 0 _ _ -> copy_array 0 > 0 > _ ^
+copy_array 1 _ _ -> copy_array 1 > 1 > _ ^
+copy_array | _ _ -> copy_array | > | > _ ^
+copy_array _ _ _ -> subtract_element _ < _ < _ ^
+
+subtract_element 0 0 _ -> subtract_element 0 < 1 < _ ^
+subtract_element 0 1 _ -> go_to_prev_to_subtract_element 0 < 0 < _ ^
+subtract_element 1 0 _ -> subtract_element 1 < 1 < _ ^
+subtract_element 1 1 _ -> go_to_prev_to_subtract_element 1 < 0 < _ ^
+subtract_element 0 ! _ -> go_to_prev_to_subtract_element 0 < ! < _ ^
+subtract_element 1 ! _ -> go_to_prev_to_subtract_element 1 < ! < _ ^
+subtract_element | | _ -> copy_for_answer | > | > _ ^
+subtract_element _ _ _ -> copy_for_answer _ > _ > _ ^
+
+go_to_prev_to_subtract_element 0 0 _ -> go_to_prev_to_subtract_element 0 < 0 < _ ^
+go_to_prev_to_subtract_element 0 1 _ -> go_to_prev_to_subtract_element 0 < 1 < _ ^
+go_to_prev_to_subtract_element 1 0 _ -> go_to_prev_to_subtract_element 1 < 0 < _ ^
+go_to_prev_to_subtract_element 1 1 _ -> go_to_prev_to_subtract_element 1 < 1 < _ ^
+go_to_prev_to_subtract_element 0 ! _ -> go_to_prev_to_subtract_element 0 < ! < _ ^
+go_to_prev_to_subtract_element 1 ! _ -> go_to_prev_to_subtract_element 1 < ! < _ ^
+go_to_prev_to_subtract_element | | _ -> subtract_element | < | < _ ^
+go_to_prev_to_subtract_element _ _ _ -> check_if_empty _ > _ > _ ^
+
+copy_for_answer 0 1 _ -> copy_for_answer 0 > ! > 0 >
+copy_for_answer 1 1 _ -> copy_for_answer 1 > ! > 1 >
+copy_for_answer | | _ -> go_to_prev_to_subtract_element | < | < | >
+copy_for_answer _ _ _ -> go_to_prev_to_subtract_element _ < _ < | >
+
+check_if_empty 0 0 _ -> go_to_end_to_subtract_element 0 > 0 > _ ^
+check_if_empty 0 1 _ -> go_to_end_to_subtract_element 0 > 1 > _ ^
+check_if_empty 1 0 _ -> go_to_end_to_subtract_element 1 > 0 > _ ^
+check_if_empty 1 1 _ -> go_to_end_to_subtract_element 1 > 1 > _ ^
+check_if_empty | | _ -> check_if_empty | > | > _ ^
+check_if_empty 0 ! _ -> check_if_empty 0 > ! > _ ^
+check_if_empty 1 ! _ -> check_if_empty 1 > ! > _ ^
+check_if_empty _ _ _ -> remove_redundant_|_for_answer _ ^ _ ^ _ <
+
+go_to_end_to_subtract_element 0 0 _ -> go_to_end_to_subtract_element 0 > 0 > _ ^
+go_to_end_to_subtract_element 0 1 _ -> go_to_end_to_subtract_element 0 > 1 > _ ^
+go_to_end_to_subtract_element 1 0 _ -> go_to_end_to_subtract_element 1 > 0 > _ ^
+go_to_end_to_subtract_element 1 1 _ -> go_to_end_to_subtract_element 1 > 1 > _ ^
+go_to_end_to_subtract_element | | _ -> go_to_end_to_subtract_element | > | > _ ^
+go_to_end_to_subtract_element 0 ! _ -> go_to_end_to_subtract_element 0 > ! > _ ^
+go_to_end_to_subtract_element 1 ! _ -> go_to_end_to_subtract_element 1 > ! > _ ^
+go_to_end_to_subtract_element _ _ _ -> subtract_element _ < _ < _ ^
+
+remove_redundant_|_for_answer _ _ | -> prepare_for_answer _ < _ < _ <
+
+prepare_for_answer 0 ! 0 -> prepare_for_answer 0 < _ < _ <
+prepare_for_answer 1 ! 0 -> prepare_for_answer 0 < _ < _ <
+prepare_for_answer 0 ! 1 -> prepare_for_answer 1 < _ < _ <
+prepare_for_answer 1 ! 1 -> prepare_for_answer 1 < _ < _ <
+prepare_for_answer | | 0 -> prepare_for_answer 0 < _ < _ <
+prepare_for_answer | | 1 -> prepare_for_answer 1 < _ < _ <
+prepare_for_answer 0 ! | -> prepare_for_answer | < _ < _ <
+prepare_for_answer 1 ! | -> prepare_for_answer | < _ < _ <
+prepare_for_answer | | | -> prepare_for_answer | < _ < _ <
+prepare_for_answer _ _ _ -> AC _ > _ ^ _ ^

@@ -1,0 +1,63 @@
+start: get_first_digit
+accept: finished
+reject: fault
+blank: _
+
+get_first_digit _ -> finished _ ^
+
+get_first_digit 0 -> replace_last_virgin_with_0 0 >
+get_first_digit 1 -> replace_last_virgin_with_1 1 >
+
+replace_last_virgin_with_0 0 -> replace_last_virgin_with_0 0 >
+replace_last_virgin_with_0 1 -> replace_last_virgin_with_0 1 >
+replace_last_virgin_with_0 _ -> set_last_0 _ <
+replace_last_virgin_with_0 O -> set_last_0 O <
+replace_last_virgin_with_0 I -> set_last_0 I <
+
+replace_last_virgin_with_1 0 -> replace_last_virgin_with_1 0 >
+replace_last_virgin_with_1 1 -> replace_last_virgin_with_1 1 >
+replace_last_virgin_with_1 _ -> set_last_1 _ <
+replace_last_virgin_with_1 O -> set_last_1 O <
+replace_last_virgin_with_1 I -> set_last_1 I <
+
+set_last_0 0 -> replace_first_virgin_with_0 O <
+set_last_0 1 -> replace_first_virgin_with_1 O <
+
+set_last_1 0 -> replace_first_virgin_with_0 I <
+set_last_1 1 -> replace_first_virgin_with_1 I <
+
+replace_first_virgin_with_0 0 -> replace_first_virgin_with_0 0 <
+replace_first_virgin_with_0 1 -> replace_first_virgin_with_0 1 <
+replace_first_virgin_with_0 O -> set_first_0 O >
+replace_first_virgin_with_0 I -> set_first_0 I >
+replace_first_virgin_with_0 _ -> set_first_0 _ >
+
+replace_first_virgin_with_1 0 -> replace_first_virgin_with_1 0 <
+replace_first_virgin_with_1 1 -> replace_first_virgin_with_1 1 <
+replace_first_virgin_with_1 O -> set_first_1 O >
+replace_first_virgin_with_1 I -> set_first_1 I >
+replace_first_virgin_with_1 _ -> set_first_1 _ >
+
+set_first_0 0 -> get_first_digit O >
+set_first_0 1 -> get_first_digit O >
+
+set_first_1 0 -> get_first_digit I >
+set_first_1 1 -> get_first_digit I >
+
+
+get_first_digit O -> go_to_last O >
+get_first_digit I -> go_to_last I >
+
+set_first_0 O -> go_to_last O >
+set_first_0 I -> go_to_last I >
+
+set_first_1 O -> go_to_last O >
+set_first_1 I -> go_to_last I >
+
+go_to_last O -> go_to_last O >
+go_to_last I -> go_to_last I >
+go_to_last _ -> prepare_for_answer _ <
+
+prepare_for_answer O -> prepare_for_answer 0 <
+prepare_for_answer I -> prepare_for_answer 1 <
+prepare_for_answer _ -> finished _ >

@@ -1,0 +1,88 @@
+start: go_to_end_to_subtract
+accept: finished
+reject: ignored
+blank: _
+
+go_to_end_to_subtract 0 -> go_to_end_to_subtract 0 >
+go_to_end_to_subtract 1 -> go_to_end_to_subtract 1 >
+go_to_end_to_subtract * -> go_to_end_to_subtract * >
+go_to_end_to_subtract _ -> subtract _ <
+
+subtract 0 -> subtract 1 <
+subtract 1 -> go_to_term_to_update_res 0 <
+subtract * -> go_to_end_to_clear_redundant * >
+
+go_to_term_to_update_res 0 -> go_to_term_to_update_res 0 <
+go_to_term_to_update_res 1 -> go_to_term_to_update_res 1 <
+go_to_term_to_update_res * -> get_digit * <
+
+
+get_digit 0 -> get_away_from_term_to_add_0 O <
+get_digit 1 -> get_away_from_term_to_add_1 I <
+get_digit ! -> go_to_start_to_prepare_for_next_step ! <
+
+get_away_from_term_to_add_0 0 -> get_away_from_term_to_add_0 0 <
+get_away_from_term_to_add_0 1 -> get_away_from_term_to_add_0 1 <
+get_away_from_term_to_add_0 _ -> add_0 ! <
+get_away_from_term_to_add_0 ! -> add_0 ! <
+
+get_away_from_term_to_add_1 0 -> get_away_from_term_to_add_1 0 <
+get_away_from_term_to_add_1 1 -> get_away_from_term_to_add_1 1 <
+get_away_from_term_to_add_1 _ -> add_1 ! <
+get_away_from_term_to_add_1 ! -> add_1 ! <
+
+add_0 _ -> go_to_term_to_get_next_digit O >
+add_0 O -> add_0 O <
+add_0 I -> add_0 I <
+add_0 0 -> go_to_term_to_get_next_digit O >
+add_0 1 -> go_to_term_to_get_next_digit I >
+
+add_1 _ -> go_to_term_to_get_next_digit I >
+add_1 O -> add_1 O <
+add_1 I -> add_1 I <
+add_1 0 -> go_to_term_to_get_next_digit I >
+add_1 1 -> carry O <
+
+carry _ -> go_to_term_to_get_next_digit 1 >
+carry 0 -> go_to_term_to_get_next_digit 1 >
+carry 1 -> carry 0 <
+
+go_to_term_to_get_next_digit 0 -> go_to_term_to_get_next_digit 0 >
+go_to_term_to_get_next_digit 1 -> go_to_term_to_get_next_digit 1 >
+go_to_term_to_get_next_digit O -> go_to_term_to_get_next_digit O >
+go_to_term_to_get_next_digit I -> go_to_term_to_get_next_digit I >
+go_to_term_to_get_next_digit ! -> get_next_digit ! >
+
+get_next_digit 0 -> get_next_digit 0 >
+get_next_digit 1 -> get_next_digit 1 >
+get_next_digit O -> get_digit O <
+get_next_digit I -> get_digit I <
+
+
+go_to_start_to_prepare_for_next_step 0 -> go_to_start_to_prepare_for_next_step 0 <
+go_to_start_to_prepare_for_next_step 1 -> go_to_start_to_prepare_for_next_step 1 <
+go_to_start_to_prepare_for_next_step O -> go_to_start_to_prepare_for_next_step O <
+go_to_start_to_prepare_for_next_step I -> go_to_start_to_prepare_for_next_step I <
+go_to_start_to_prepare_for_next_step _ -> prepare_for_next_step _ >
+
+prepare_for_next_step 0 -> prepare_for_next_step 0 >
+prepare_for_next_step 1 -> prepare_for_next_step 1 >
+prepare_for_next_step O -> prepare_for_next_step 0 >
+prepare_for_next_step I -> prepare_for_next_step 1 >
+prepare_for_next_step ! -> prepare_for_next_step ! >
+prepare_for_next_step * -> go_to_end_to_subtract * >
+
+
+go_to_end_to_clear_redundant 0 -> go_to_end_to_clear_redundant 0 >
+go_to_end_to_clear_redundant 1 -> go_to_end_to_clear_redundant 1 >
+go_to_end_to_clear_redundant _ -> clear_redundant _ <
+
+clear_redundant 0 -> clear_redundant _ <
+clear_redundant 1 -> clear_redundant _ <
+clear_redundant * -> clear_redundant _ <
+clear_redundant ! -> go_to_start_to_show_answer _ <
+clear_redundant _ -> finished 0 ^
+
+go_to_start_to_show_answer 0 -> go_to_start_to_show_answer 0 <
+go_to_start_to_show_answer 1 -> go_to_start_to_show_answer 1 <
+go_to_start_to_show_answer _ -> finished _ >

@@ -1,0 +1,54 @@
+start: go_to_end
+accept: finished
+reject: ignored
+blank: _
+ 
+go_to_end 0 -> go_to_end 0 >
+go_to_end 1 -> go_to_end 1 >
+go_to_end + -> go_to_end + >
+go_to_end _ -> get_digit _ <
+ 
+get_digit 0 -> another_is_0 ! <
+get_digit 1 -> another_is_1 ! <
+get_digit + -> prepare_for_final_answer _ <
+ 
+another_is_0 0 -> another_is_0 0 <
+another_is_0 1 -> another_is_0 1 <
+another_is_0 + -> add_to_0 + <
+another_is_0 I -> add_to_0 I <
+another_is_0 O -> add_to_0 O <
+ 
+another_is_1 0 -> another_is_1 0 <
+another_is_1 1 -> another_is_1 1 <
+another_is_1 + -> add_to_1 + <
+another_is_1 I -> add_to_1 I <
+another_is_1 O -> add_to_1 O <
+ 
+add_to_0 0 -> last_digit_to_blank O >
+add_to_0 _ -> last_digit_to_blank O >
+add_to_0 1 -> last_digit_to_blank I >
+add_to_0 O -> add_to_0 O <
+add_to_0 I -> add_to_0 I <
+ 
+add_to_1 0 -> last_digit_to_blank I >
+add_to_1 _ -> last_digit_to_blank I >
+add_to_1 1 -> carry O <
+add_to_1 O -> add_to_1 O <
+add_to_1 I -> add_to_1 I <
+  
+carry 1 -> carry 0 <
+carry 0 -> last_digit_to_blank 1 >
+carry _ -> last_digit_to_blank 1 >
+ 
+last_digit_to_blank O -> last_digit_to_blank O >
+last_digit_to_blank I -> last_digit_to_blank I >
+last_digit_to_blank 0 -> last_digit_to_blank 0 >
+last_digit_to_blank 1 -> last_digit_to_blank 1 >
+last_digit_to_blank + -> last_digit_to_blank + >
+last_digit_to_blank ! -> get_digit _ <
+ 
+prepare_for_final_answer 0 -> prepare_for_final_answer 0 <
+prepare_for_final_answer 1 -> prepare_for_final_answer 1 <
+prepare_for_final_answer O -> prepare_for_final_answer 0 <
+prepare_for_final_answer I -> prepare_for_final_answer 1 <
+prepare_for_final_answer _ -> finished _ >
