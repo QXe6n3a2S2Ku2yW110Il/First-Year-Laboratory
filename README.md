@@ -63,3 +63,29 @@
     * Mo's algorithm
     * Fractional cascading
     * Heavy-light decomposition
+
+  * 8
+    * DFS
+    * Topological sorting
+    * Strongly connected component
+    * Kosaraju's algorithm
+    * Cut verices, bridges
+    * Vertex and edge biconnected components
+
+  * 9
+    * BFS
+    * Bellman-Forg algorithm
+    * Dijkstra's algorithm
+    * Floyd–Warshall algorithm
+    * Johnson's algorithm
+    
+  * 10
+    * Matching
+    * Ford-Fulkerson algorithm
+    * Kuhn's algorithm
+
+  * 11
+    * FLow network, s-t cut
+    * Ford-Fulkerson algorithm DFS implementation
+    * Edmonds-Karp algorithm
+    * Dinic's algorithm
