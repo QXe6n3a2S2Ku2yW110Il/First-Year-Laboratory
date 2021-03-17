@@ -1,0 +1,5 @@
+start () [] : start () PLUS t () | t ()
+
+t () [] : NUM
+
+PLUS : '+'

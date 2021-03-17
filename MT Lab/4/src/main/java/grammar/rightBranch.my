@@ -1,0 +1,11 @@
+start () [] : a () b () | a () c ()
+
+a () [] : NUM
+
+b () [] : KEK
+
+c () [] : LOL
+
+NUM : [0-9]+
+KEK : 'kek'
+LOL : 'lol'

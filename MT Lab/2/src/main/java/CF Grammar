@@ -1,0 +1,124 @@
+https://letpy.com/handbook/operator-priorities/
+Priority:
+1) unary not
+2) operations with set: in, not in
+3) and
+4) xor
+5) or
+
+A -> A (or B)*,  i.e. A -> A or B,  A -> B
+B -> B (xor C)*, i.e. B -> B xor C, B -> C
+C -> C (and D)*, i.e. C -> C and D, C -> D
+D -> (not)* E, i.e. D -> not D, D -> E
+E -> F in F
+E -> F not in F
+F -> V
+F -> (A)
+
+First CF Grammar:
+A -> A or B
+A -> B
+B -> B xor C
+B -> C
+C -> C and D
+C -> D
+D -> not D
+D -> E
+!!E -> F
+E -> F in F
+E -> F not in F
+F -> V
+F -> (A)
+
+(a in b) or (c not in b)
+A -> A or B -> B or B -> C or B -> D or B -> E or B -> F or B ->* (A) or (A) ->
+
+E -> E + T
+E -> T
+T -> T * F
+T -> F
+F -> V
+F -> (E)
+(2 + 2) * 2
+E -> T -> T * F -> F * F -> (E) * F -> (E + T) * F -> (T + T) * F -> (F + F) * F -> (2 + 2) * 2
+
+After remove left recursion and right branch:
+A -> BA'
+A' -> or BA'
+A' -> eps
+B -> CB'
+B' -> xor CB'
+B' -> eps
+C -> DC'
+C' -> and DC'
+C' -> eps
+D -> not D
+D -> E
+E -> FE'
+E' -> eps
+E' -> in F
+E' -> not in F
+F -> n
+F -> (A)
+
+    FIRST               FOLLOW
+A   not, n, (           $, )
+A'  or, eps             $, )
+B   not, n, (           or, $, )
+B'  xor, eps            or, $, )
+C   not, n, (           xor, or, $, )
+C'  and, eps            xor, or, $, )
+D   not, n, (           and, xor, or, $, )
+E   n, (                and, xor, or, $, )
+E'  eps, in, not in     and, xor, or, $, )
+F   n, (                in, not in, and, xor, or, $, )
+
+
+Modification: a not not not ... not in b
+A -> A or B
+A -> B
+B -> B xor C
+B -> C
+C -> C and D
+C -> D
+D -> not D
+D -> E
+!!E -> F
+E -> FG
+F -> V
+F -> (A)
+G -> not G
+G -> in F
+
+After remove left recursion and right branch:
+A -> BA'
+A' -> or BA'
+A' -> eps
+B -> CB'
+B' -> xor CB'
+B' -> eps
+C -> DC'
+C' -> and DC'
+C' -> eps
+D -> not D
+D -> E
+E -> FE'
+E' -> eps
+E' -> G
+F -> n
+F -> (A)
+G -> not G
+G -> in F
+
+    FIRST               FOLLOW
+A   not, n, (           $, )
+A'  or, eps             $, )
+B   not, n, (           or, $, )
+B'  xor, eps            or, $, )
+C   not, n, (           xor, or, $, )
+C'  and, eps            xor, or, $, )
+D   not, n, (           and, xor, or, $, )
+E   n, (                and, xor, or, $, )
+E'  eps, in, not in     and, xor, or, $, )
+F   n, (                in, not in, and, xor, or, $, )
+G   not in, in          and, xor, or, $, )

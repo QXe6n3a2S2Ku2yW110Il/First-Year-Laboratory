@@ -1,0 +1,5 @@
+// if > a b print - * a c 3 = c 3 if == c b = b a print b
+// if >= * a c + c b print + c * a b = c 7 if <= c d print / a b
+
+// if > 1 2 = a 5 if < 3 5 print * 100 500 print b
+// if > 2 3 print 3 if > 4 - 7 2 print + 3 4

@@ -1,0 +1,27 @@
+start () [] : a ()
+
+a  () [] : b () a1 ()
+a1 () [] : OR b () a1 () | EPS
+
+b  () [] : c () b1 ()
+b1 () [] : XOR c () b1 () | EPS
+
+c  () [] : d () c1 ()
+c1 () [] : AND d () c1 () | EPS
+
+d  () [] : NOT d () | e ()
+
+e  () [] : f () e1 ()
+e1 () [] : EPS | IN f () | NOT_IN f ()
+
+f  () [] : VAR | LP a () RP
+
+OR : "or"
+XOR : "xor"
+AND : "and"
+IN : "in"
+NOT_IN : "not in"
+NOT : "not"
+VAR : [a-z]
+LP : "("
+RP : ")"

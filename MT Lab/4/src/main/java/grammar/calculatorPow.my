@@ -1,0 +1,54 @@
+start () [double val] : e () {
+    $val = $0.val;
+}
+
+e () [double val] : t () e1 ($0.val) {
+    $val = $1.val;
+}
+
+e1 (double acc) [double val] : PLUS t () e1 (acc + $1.val) {
+    $val = $2.val;
+} MINUS t () e1 (acc - $1.val) {
+    $val = $2.val;
+} EPS {
+    $val = acc;
+}
+
+t () [double val] : p () t1 ($0.val) {
+    $val = $1.val;
+}
+
+t1 (double acc) [double val] : MUL p () t1 (acc * $1.val) {
+    $val = $2.val;
+} DIV f () t1 (acc / $1.val) {
+    $val = $2.val;
+} EPS {
+    $val = acc;
+}
+
+p () [double val] : f () p1 () {
+    $val = Math.pow($0.val, $1.val);
+}
+
+p1 () [double val]: POW f () p1 () {
+    $val = Math.pow($1.val, $2.val);
+} EPS {
+    $val = 1;
+}
+
+f () [double val] : NUM {
+    $val = Double.parseDouble($0.node);
+} MINUS f () {
+    $val = -$1.val;
+} LP e () RP {
+    $val = $1.val;
+}
+
+NUM : [\\d]+(.[\\d]+)?
+LP : '('
+RP : ')'
+PLUS : '+'
+MINUS : '-'
+POW : '**'
+MUL : '*'
+DIV : '/'

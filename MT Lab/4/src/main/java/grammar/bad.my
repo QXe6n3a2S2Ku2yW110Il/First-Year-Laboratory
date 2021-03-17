@@ -1,0 +1,19 @@
+start () [] : KLEENE c () s1 () | SELECT c () s1 () | LPAREN c () s1 () | RPAREN c () s1 () | LETTER c () s1 ()
+
+s1 () [] : SELECT c () s1 () | KLEENE | LPAREN | RPAREN | LETTER
+
+c () [] : KLEENE k () c1 () | SELECT k () c1 () | LPAREN k () c1 () | RPAREN k () c1 () | LETTER k () c1 ()
+
+c1 () [] : LETTER k () c1 () | KLEENE | SELECT | LPAREN | RPAREN
+
+k () [] : KLEENE r () k1 () | SELECT r () k1 () | LPAREN r () k1 () | RPAREN r () k1 () | LETTER r () k1 ()
+
+k1 () [] : KLEENE k1 () | EPS
+
+r () [] : LPAREN start () | LETTER
+
+KLEENE      : "*"
+SELECT      : "|"
+LPAREN      : "("
+RPAREN      : ")"
+LETTER      : [a-z]+

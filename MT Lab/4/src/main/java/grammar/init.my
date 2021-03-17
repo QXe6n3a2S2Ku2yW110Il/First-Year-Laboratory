@@ -1,0 +1,24 @@
+start () [String s] : t () l () {
+    $s = $0.s + " " + $1.s + ";";
+}
+
+t () [String s] : INT {
+    $s = "int";
+} REAL {
+    $s = "real";
+}
+
+l () [String s] : ID l1 ($0.node + " = 0") {
+    $s = $1.s;
+}
+
+l1 (String acc) [String s] : COMMA ID l1 (acc + ", " + $1.node + " = 0") {
+    $s = $2.s;
+} EPS {
+    $s = acc;
+}
+
+INT : "int"
+REAL : "real"
+ID : [a-zA-Z]+
+COMMA : ","
